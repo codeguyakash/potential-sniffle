@@ -23,9 +23,10 @@ const signup = async (req, res) => {
       { email: result.email, id: result._id },
       process.env.SECRET_KEY
     );
-    console.log("3");
+
     const userWithoutPassword = { ...result.toObject() };
     delete userWithoutPassword.password;
+    
     res.status(201).json({ user: userWithoutPassword, token: token });
   } catch (error) {
     console.log(error);

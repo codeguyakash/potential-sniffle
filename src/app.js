@@ -17,19 +17,20 @@ app.use(cors());
 
 export const startServer = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    mongoose.connect(process.env.MONGO_URI);
 
     app.use("/users", userRouter);
     app.use("/note", noteRouter);
-
+    let count = 0;
     app.get("/", (_, res) => {
+      console.log("requests", count);
+      count++;
       res.send({ process: process.pid, numberOfCpu: numCPUs });
     });
 
     app.listen(PORT, () => {
-      console.log(
-        `SWorker Running :: http://localhost:${PORT} PID::${process.pid}`
-      );
+      let pid = process.pid;
+      console.log(`{PORT:${PORT}} {PID:${pid}}`, pid);
     });
   } catch (error) {
     console.error("MongoDB connection error:", error);
